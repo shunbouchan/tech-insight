@@ -14,9 +14,9 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.config import settings
-from app.models.article import Article
-from app.services.embedding_service import embedding_service
+from app.config import settings  # noqa: E402
+from app.models.article import Article  # noqa: E402
+from app.services.embedding_service import embedding_service  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
