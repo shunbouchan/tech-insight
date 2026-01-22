@@ -40,12 +40,7 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Poetry
-poetry.lock
-
 # Next.js
-.next/
-out/
 .vercel
 
 # Claude Code
