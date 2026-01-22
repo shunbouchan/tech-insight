@@ -92,10 +92,10 @@ pgvector HNSWインデックス → コサイン類似度検索
 ## API設計
 
 `/api/v1`でのRESTful API:
-- `GET /articles` - 一覧取得（ページネーション、category/authorでフィルタ可能）
-- `GET /articles/{id}` - 詳細取得
+- `GET /articles` - 一覧取得（excerpt返却、keyword/category/authorでフィルタ可能）
+- `GET /articles/{id}` - 詳細取得（content全文）
 - `POST /articles` - 作成（埋め込み自動生成）
-- `PUT /articles/{id}` - 更新（必要に応じて埋め込み再生成）
+- `PATCH /articles/{id}` - 部分更新（必要に応じて埋め込み再生成）
 - `DELETE /articles/{id}` - 削除
 - `GET /search?q=...` - セマンティック検索
 
