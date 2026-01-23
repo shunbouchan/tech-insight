@@ -55,12 +55,12 @@ export default function EditArticlePage({ params }: EditArticlePageProps) {
   };
 
   return (
-    <div className="bg-gray-50 min-h-full py-8">
-      <div className="container mx-auto px-4 max-w-3xl">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">記事の編集</h1>
+    <div className="min-h-full bg-gray-50 py-8">
+      <div className="container mx-auto max-w-3xl px-4">
+        <h1 className="mb-8 text-3xl font-bold text-gray-900">記事の編集</h1>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
             <p className="text-red-600">{error}</p>
           </div>
         )}
@@ -73,20 +73,20 @@ export default function EditArticlePage({ params }: EditArticlePageProps) {
             {isLoading ? (
               <div className="space-y-6">
                 <div>
-                  <Skeleton variant="text" className="h-5 w-20 mb-1" />
+                  <Skeleton variant="text" className="mb-1 h-5 w-20" />
                   <Skeleton variant="rectangular" className="h-10 w-full rounded" />
                 </div>
                 <div>
-                  <Skeleton variant="text" className="h-5 w-16 mb-1" />
+                  <Skeleton variant="text" className="mb-1 h-5 w-16" />
                   <Skeleton variant="rectangular" className="h-40 w-full rounded" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Skeleton variant="text" className="h-5 w-16 mb-1" />
+                    <Skeleton variant="text" className="mb-1 h-5 w-16" />
                     <Skeleton variant="rectangular" className="h-10 w-full rounded" />
                   </div>
                   <div>
-                    <Skeleton variant="text" className="h-5 w-20 mb-1" />
+                    <Skeleton variant="text" className="mb-1 h-5 w-20" />
                     <Skeleton variant="rectangular" className="h-10 w-full rounded" />
                   </div>
                 </div>
@@ -99,9 +99,7 @@ export default function EditArticlePage({ params }: EditArticlePageProps) {
                 isSubmitting={isSubmitting}
               />
             ) : (
-              <p className="text-gray-600 text-center py-8">
-                記事が見つかりませんでした
-              </p>
+              <p className="py-8 text-center text-gray-600">記事が見つかりませんでした</p>
             )}
           </CardContent>
         </Card>

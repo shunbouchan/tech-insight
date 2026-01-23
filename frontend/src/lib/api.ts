@@ -15,10 +15,7 @@ class ApiClient {
     this.baseUrl = baseUrl;
   }
 
-  private async request<T>(
-    endpoint: string,
-    options?: RequestInit
-  ): Promise<T> {
+  private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
     const response = await fetch(url, {
       ...options,
@@ -30,11 +27,7 @@ class ApiClient {
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
-      throw new Error(
-        typeof error.detail === 'string'
-          ? error.detail
-          : 'Request failed'
-      );
+      throw new Error(typeof error.detail === 'string' ? error.detail : 'Request failed');
     }
 
     if (response.status === 204) {

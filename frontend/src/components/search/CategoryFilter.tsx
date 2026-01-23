@@ -10,20 +10,14 @@ interface CategoryFilterProps {
   className?: string;
 }
 
-export function CategoryFilter({
-  value,
-  onChange,
-  className,
-}: CategoryFilterProps) {
+export function CategoryFilter({ value, onChange, className }: CategoryFilterProps) {
   return (
     <div className={cn('flex flex-wrap gap-2', className)}>
       <button
         onClick={() => onChange('')}
         className={cn(
-          'px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
-          value === ''
-            ? 'bg-gray-900 text-white'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          'rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
+          value === '' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
         )}
       >
         All
@@ -33,7 +27,7 @@ export function CategoryFilter({
           key={category}
           onClick={() => onChange(category)}
           className={cn(
-            'px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
+            'rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
             value === category
               ? CATEGORY_COLORS[category]
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'

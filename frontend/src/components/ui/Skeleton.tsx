@@ -39,16 +39,16 @@ Skeleton.displayName = 'Skeleton';
 
 export function ArticleCardSkeleton() {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4">
-      <div className="flex items-center gap-2 mb-3">
+    <div className="rounded-lg border border-gray-200 bg-white p-4">
+      <div className="mb-3 flex items-center gap-2">
         <Skeleton variant="rectangular" width={60} height={20} />
         <Skeleton variant="text" width={100} />
       </div>
-      <Skeleton variant="text" className="h-6 mb-2" />
+      <Skeleton variant="text" className="mb-2 h-6" />
       <Skeleton variant="text" className="mb-1" />
       <Skeleton variant="text" className="mb-1" />
       <Skeleton variant="text" width="60%" />
-      <div className="flex items-center gap-4 mt-4">
+      <div className="mt-4 flex items-center gap-4">
         <Skeleton variant="text" width={80} />
         <Skeleton variant="text" width={100} />
       </div>
@@ -58,7 +58,7 @@ export function ArticleCardSkeleton() {
 
 export function ArticleListSkeleton({ count = 6 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: count }).map((_, i) => (
         <ArticleCardSkeleton key={i} />
       ))}

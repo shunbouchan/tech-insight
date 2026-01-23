@@ -10,12 +10,7 @@ interface PaginationProps {
   className?: string;
 }
 
-export function Pagination({
-  currentPage,
-  totalPages,
-  onPageChange,
-  className,
-}: PaginationProps) {
+export function Pagination({ currentPage, totalPages, onPageChange, className }: PaginationProps) {
   if (totalPages <= 1) return null;
 
   const getPageNumbers = (): (number | 'ellipsis')[] => {
@@ -62,27 +57,14 @@ export function Pagination({
         disabled={currentPage === 1}
         aria-label="Previous page"
       >
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
+        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </Button>
 
       {getPageNumbers().map((page, index) =>
         page === 'ellipsis' ? (
-          <span
-            key={`ellipsis-${index}`}
-            className="px-2 py-1 text-gray-500"
-          >
+          <span key={`ellipsis-${index}`} className="px-2 py-1 text-gray-500">
             ...
           </span>
         ) : (
@@ -105,18 +87,8 @@ export function Pagination({
         disabled={currentPage === totalPages}
         aria-label="Next page"
       >
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
+        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </Button>
     </nav>

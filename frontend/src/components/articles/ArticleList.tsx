@@ -23,7 +23,7 @@ export function ArticleList({
 
   if (articles.length === 0) {
     return (
-      <div className="text-center py-12">
+      <div className="py-12 text-center">
         <svg
           className="mx-auto h-12 w-12 text-gray-400"
           fill="none"
@@ -43,7 +43,7 @@ export function ArticleList({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {articles.map((article) => (
         <ArticleCard
           key={article.id}

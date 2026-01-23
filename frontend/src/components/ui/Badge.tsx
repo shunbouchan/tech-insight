@@ -11,15 +11,13 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, category, variant = 'default', children, ...props }, ref) => {
     const colorClass =
-      variant === 'category' && category
-        ? CATEGORY_COLORS[category]
-        : 'bg-gray-100 text-gray-800';
+      variant === 'category' && category ? CATEGORY_COLORS[category] : 'bg-gray-100 text-gray-800';
 
     return (
       <span
         ref={ref}
         className={cn(
-          'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+          'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
           colorClass,
           className
         )}

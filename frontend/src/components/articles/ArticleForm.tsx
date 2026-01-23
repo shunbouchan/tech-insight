@@ -103,7 +103,7 @@ export function ArticleForm({
         required
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Input
           label="著者"
           value={author}
@@ -134,13 +134,8 @@ export function ArticleForm({
         required
       />
 
-      <div className="flex justify-end gap-3 pt-4 border-t">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={onCancel}
-          disabled={isSubmitting}
-        >
+      <div className="flex justify-end gap-3 border-t pt-4">
+        <Button type="button" variant="secondary" onClick={onCancel} disabled={isSubmitting}>
           キャンセル
         </Button>
         <Button type="submit" isLoading={isSubmitting}>
