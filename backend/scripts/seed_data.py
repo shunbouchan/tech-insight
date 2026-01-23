@@ -92,6 +92,15 @@ async def seed_articles(session: AsyncSession) -> int:
     return len(articles_to_insert)
 
 
+async def reset_sequence(session: AsyncSession) -> None:
+    """Reset the articles_id_seq to max(id) to avoid conflicts."""
+    await session.execute(
+        text("SELECT setval('articles_id_seq', COALESCE((SELECT MAX(id) FROM articles), 1))")
+    )
+    await session.commit()
+    logger.info("Reset articles_id_seq to current max ID")
+
+
 async def main():
     """Main entry point."""
     logger.info("Starting seed script...")
@@ -108,6 +117,9 @@ async def main():
         # Seed articles
         count = await seed_articles(session)
         logger.info(f"Seeding complete. Inserted {count} articles.")
+
+        # Reset sequence to avoid ID conflicts on new inserts
+        await reset_sequence(session)
 
     await engine.dispose()
 
