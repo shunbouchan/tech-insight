@@ -27,43 +27,49 @@ export function useArticles(initialParams?: ArticleListParams): UseArticlesRetur
   });
   const [params, setParams] = useState<ArticleListParams>(initialParams || {});
 
-  const fetchArticles = useCallback(async (newParams?: ArticleListParams) => {
-    const queryParams = newParams !== undefined ? newParams : params;
-    setState((prev) => ({ ...prev, isLoading: true, error: null }));
+  const fetchArticles = useCallback(
+    async (newParams?: ArticleListParams) => {
+      const queryParams = newParams !== undefined ? newParams : params;
+      setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
-    try {
-      const response = await api.articles.list({
-        page_size: DEFAULT_PAGE_SIZE,
-        ...queryParams,
-      });
+      try {
+        const response = await api.articles.list({
+          page_size: DEFAULT_PAGE_SIZE,
+          ...queryParams,
+        });
 
-      setState({
-        articles: response.items,
-        pagination: {
-          total: response.total,
-          page: response.page,
-          page_size: response.page_size,
-          total_pages: response.total_pages,
-        },
-        isLoading: false,
-        error: null,
-      });
+        setState({
+          articles: response.items,
+          pagination: {
+            total: response.total,
+            page: response.page,
+            page_size: response.page_size,
+            total_pages: response.total_pages,
+          },
+          isLoading: false,
+          error: null,
+        });
 
-      if (newParams !== undefined) {
-        setParams(newParams);
+        if (newParams !== undefined) {
+          setParams(newParams);
+        }
+      } catch (err) {
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: err instanceof Error ? err.message : 'Failed to fetch articles',
+        }));
       }
-    } catch (err) {
-      setState((prev) => ({
-        ...prev,
-        isLoading: false,
-        error: err instanceof Error ? err.message : 'Failed to fetch articles',
-      }));
-    }
-  }, [params]);
+    },
+    [params]
+  );
 
-  const setPage = useCallback((page: number) => {
-    fetchArticles({ ...params, page });
-  }, [fetchArticles, params]);
+  const setPage = useCallback(
+    (page: number) => {
+      fetchArticles({ ...params, page });
+    },
+    [fetchArticles, params]
+  );
 
   useEffect(() => {
     fetchArticles();

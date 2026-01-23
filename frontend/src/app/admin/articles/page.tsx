@@ -68,23 +68,18 @@ export default function AdminArticlesPage() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-full py-8">
+    <div className="min-h-full bg-gray-50 py-8">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">記事管理</h1>
+            <h1 className="mb-2 text-3xl font-bold text-gray-900">記事管理</h1>
             <p className="text-gray-600">
               {pagination ? `${pagination.total} 件の記事` : '読み込み中...'}
             </p>
           </div>
           <Link href="/admin/articles/new">
             <Button>
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -98,33 +93,33 @@ export default function AdminArticlesPage() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
             <p className="text-red-600">{error}</p>
           </div>
         )}
 
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   タイトル
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   カテゴリ
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   著者
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   公開日
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
                   操作
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 bg-white">
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
@@ -158,16 +153,14 @@ export default function AdminArticlesPage() {
                 articles.map((article) => (
                   <tr key={article.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900 line-clamp-1">
+                      <p className="line-clamp-1 text-sm font-medium text-gray-900">
                         {article.title}
                       </p>
                     </td>
                     <td className="px-6 py-4">
                       <Badge category={article.category} variant="category" />
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {article.author}
-                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{article.author}</td>
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {formatDate(article.published_at)}
                     </td>
@@ -178,11 +171,7 @@ export default function AdminArticlesPage() {
                             編集
                           </Button>
                         </Link>
-                        <Button
-                          variant="danger"
-                          size="sm"
-                          onClick={() => setDeleteTarget(article)}
-                        >
+                        <Button variant="danger" size="sm" onClick={() => setDeleteTarget(article)}>
                           削除
                         </Button>
                       </div>
@@ -210,22 +199,14 @@ export default function AdminArticlesPage() {
           title="記事の削除"
           size="sm"
         >
-          <p className="text-gray-600 mb-6">
+          <p className="mb-6 text-gray-600">
             「{deleteTarget?.title}」を削除しますか？この操作は取り消せません。
           </p>
           <div className="flex justify-end gap-3">
-            <Button
-              variant="secondary"
-              onClick={() => setDeleteTarget(null)}
-              disabled={isDeleting}
-            >
+            <Button variant="secondary" onClick={() => setDeleteTarget(null)} disabled={isDeleting}>
               キャンセル
             </Button>
-            <Button
-              variant="danger"
-              onClick={handleDelete}
-              isLoading={isDeleting}
-            >
+            <Button variant="danger" onClick={handleDelete} isLoading={isDeleting}>
               削除
             </Button>
           </div>

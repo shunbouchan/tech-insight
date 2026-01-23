@@ -13,12 +13,12 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-white border-b border-gray-200">
+    <header className="border-b border-gray-200 bg-white">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <svg
-              className="w-8 h-8 text-blue-600"
+              className="h-8 w-8 text-blue-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -36,9 +36,7 @@ export function Header() {
           <nav className="flex items-center gap-6">
             {navigation.map((item) => {
               const isActive =
-                item.href === '/'
-                  ? pathname === '/'
-                  : pathname.startsWith(item.href);
+                item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
 
               return (
                 <Link
@@ -46,9 +44,7 @@ export function Header() {
                   href={item.href}
                   className={cn(
                     'text-sm font-medium transition-colors',
-                    isActive
-                      ? 'text-blue-600'
-                      : 'text-gray-600 hover:text-gray-900'
+                    isActive ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'
                   )}
                 >
                   {item.name}

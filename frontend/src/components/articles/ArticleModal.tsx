@@ -57,7 +57,7 @@ export function ArticleModal({ articleId, isOpen, onClose }: ArticleModalProps) 
       )}
 
       {error && (
-        <div className="text-center py-8">
+        <div className="py-8 text-center">
           <svg
             className="mx-auto h-12 w-12 text-red-400"
             fill="none"
@@ -78,28 +78,24 @@ export function ArticleModal({ articleId, isOpen, onClose }: ArticleModalProps) 
       {article && !isLoading && (
         <article>
           <header className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-3">
-              {article.title}
-            </h1>
+            <h1 className="mb-3 text-2xl font-bold text-gray-900">{article.title}</h1>
             <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
               <Badge category={article.category} variant="category" />
               <span>by {article.author}</span>
               <span>|</span>
-              <time dateTime={article.published_at}>
-                {formatDateTime(article.published_at)}
-              </time>
+              <time dateTime={article.published_at}>{formatDateTime(article.published_at)}</time>
             </div>
           </header>
 
           <div className="prose prose-gray max-w-none">
             {article.content.split('\n').map((paragraph, index) => (
-              <p key={index} className="mb-4 text-gray-700 leading-relaxed">
+              <p key={index} className="mb-4 leading-relaxed text-gray-700">
                 {paragraph}
               </p>
             ))}
           </div>
 
-          <footer className="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-500">
+          <footer className="mt-8 border-t border-gray-200 pt-4 text-xs text-gray-500">
             <p>Created: {formatDateTime(article.created_at)}</p>
             <p>Last updated: {formatDateTime(article.updated_at)}</p>
           </footer>

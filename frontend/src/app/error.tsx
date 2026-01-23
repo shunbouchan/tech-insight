@@ -14,8 +14,8 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <div className="bg-gray-50 min-h-full flex items-center justify-center py-16">
-      <div className="text-center max-w-md px-4">
+    <div className="flex min-h-full items-center justify-center bg-gray-50 py-16">
+      <div className="max-w-md px-4 text-center">
         <svg
           className="mx-auto h-16 w-16 text-red-400"
           fill="none"
@@ -30,9 +30,7 @@ export default function Error({ error, reset }: ErrorProps) {
           />
         </svg>
 
-        <h1 className="mt-6 text-2xl font-bold text-gray-900">
-          エラーが発生しました
-        </h1>
+        <h1 className="mt-6 text-2xl font-bold text-gray-900">エラーが発生しました</h1>
 
         <p className="mt-4 text-gray-600">
           申し訳ございません。予期しないエラーが発生しました。
@@ -41,16 +39,12 @@ export default function Error({ error, reset }: ErrorProps) {
 
         <div className="mt-8 flex justify-center gap-4">
           <Button onClick={reset}>再試行</Button>
-          <Button variant="secondary" onClick={() => window.location.href = '/'}>
+          <Button variant="secondary" onClick={() => (window.location.href = '/')}>
             ホームに戻る
           </Button>
         </div>
 
-        {error.digest && (
-          <p className="mt-8 text-xs text-gray-400">
-            Error ID: {error.digest}
-          </p>
-        )}
+        {error.digest && <p className="mt-8 text-xs text-gray-400">Error ID: {error.digest}</p>}
       </div>
     </div>
   );

@@ -30,12 +30,12 @@ export default function NewArticlePage() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-full py-8">
-      <div className="container mx-auto px-4 max-w-3xl">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">記事の新規作成</h1>
+    <div className="min-h-full bg-gray-50 py-8">
+      <div className="container mx-auto max-w-3xl px-4">
+        <h1 className="mb-8 text-3xl font-bold text-gray-900">記事の新規作成</h1>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
             <p className="text-red-600">{error}</p>
           </div>
         )}

@@ -58,46 +58,34 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-gray-50 min-h-full py-8">
+    <div className="min-h-full bg-gray-50 py-8">
       <div className="container mx-auto px-4">
         <section className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            TechInsight
-          </h1>
-          <p className="text-gray-600 mb-6">
-            AI搭載セマンティック検索で技術記事を探索
-          </p>
+          <h1 className="mb-2 text-3xl font-bold text-gray-900">TechInsight</h1>
+          <p className="mb-6 text-gray-600">AI搭載セマンティック検索で技術記事を探索</p>
 
           <div className="space-y-4">
-            <SearchBar
-              value={query}
-              onChange={setQuery}
-              isLoading={isSearchLoading}
-            />
+            <SearchBar value={query} onChange={setQuery} isLoading={isSearchLoading} />
             <CategoryFilter value={category} onChange={handleCategoryChange} />
           </div>
         </section>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
             <p className="text-red-600">{error}</p>
           </div>
         )}
 
         <section>
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-900">
               {isSearchMode ? '検索結果' : '記事一覧'}
             </h2>
             {!isSearchMode && pagination && (
-              <p className="text-sm text-gray-500">
-                {pagination.total} 件の記事
-              </p>
+              <p className="text-sm text-gray-500">{pagination.total} 件の記事</p>
             )}
             {isSearchMode && (
-              <p className="text-sm text-gray-500">
-                {searchResults.length} 件の結果
-              </p>
+              <p className="text-sm text-gray-500">{searchResults.length} 件の結果</p>
             )}
           </div>
 
