@@ -326,7 +326,7 @@ async def health_check():
 ```yaml
 # docker-compose.yml
 healthcheck:
-  test: ["CMD", "curl", "-f", "http://localhost:8100/api/v1/health"]
+  test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
   interval: 10s
   timeout: 5s
   retries: 3
