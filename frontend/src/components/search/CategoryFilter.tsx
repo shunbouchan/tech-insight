@@ -1,7 +1,7 @@
 'use client';
 
 import { Category } from '@/types/article';
-import { CATEGORIES, CATEGORY_COLORS } from '@/lib/constants';
+import { CATEGORIES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
 interface CategoryFilterProps {
@@ -29,7 +29,7 @@ export function CategoryFilter({ value, onChange, className }: CategoryFilterPro
           className={cn(
             'rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
             value === category
-              ? CATEGORY_COLORS[category]
+              ? 'bg-gray-900 text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           )}
         >
