@@ -188,6 +188,7 @@ tech-insight/
 
 - [API設計書](docs/api.md) - APIエンドポイント詳細
 - [DB設計書](docs/db.md) - データベーススキーマ
+- [実装の説明・工夫点](docs/implementation-insights.md) - 設計判断と工夫点の解説
 
 ## ライセンス
 
