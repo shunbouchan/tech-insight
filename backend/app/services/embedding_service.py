@@ -3,6 +3,8 @@ from functools import lru_cache
 
 from sentence_transformers import SentenceTransformer
 
+from app.config import settings
+
 logger = logging.getLogger(__name__)
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
@@ -19,7 +21,7 @@ def get_model() -> SentenceTransformer:
 
 
 class EmbeddingService:
-    """Service for generating text embeddings."""
+    """Service for generating text embeddings using local sentence-transformers model."""
 
     def __init__(self):
         self._model: SentenceTransformer | None = None
@@ -58,5 +60,18 @@ class EmbeddingService:
         return self.encode_batch(texts, batch_size)
 
 
+def _create_embedding_service() -> EmbeddingService:
+    """Create embedding service based on EMBEDDING_PROVIDER setting."""
+    provider = settings.embedding_provider
+    if provider == "local":
+        logger.info("Using local embedding provider (sentence-transformers)")
+        return EmbeddingService()
+    else:
+        raise ValueError(
+            f"Unsupported embedding provider: '{provider}'. "
+            f"Currently supported: 'local'"
+        )
+
+
 # Singleton instance
-embedding_service = EmbeddingService()
+embedding_service = _create_embedding_service()
