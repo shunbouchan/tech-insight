@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@/lib/api';
 import { ArticleSummary, Pagination } from '@/types/article';
 import { ArticleListParams } from '@/types/api';
@@ -25,11 +25,11 @@ export function useArticles(initialParams?: ArticleListParams): UseArticlesRetur
     isLoading: false,
     error: null,
   });
-  const [params, setParams] = useState<ArticleListParams>(initialParams || {});
+  const paramsRef = useRef<ArticleListParams>(initialParams || {});
 
   const fetchArticles = useCallback(
     async (newParams?: ArticleListParams) => {
-      const queryParams = newParams !== undefined ? newParams : params;
+      const queryParams = newParams !== undefined ? newParams : paramsRef.current;
       setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
       try {
@@ -51,7 +51,7 @@ export function useArticles(initialParams?: ArticleListParams): UseArticlesRetur
         });
 
         if (newParams !== undefined) {
-          setParams(newParams);
+          paramsRef.current = newParams;
         }
       } catch (err) {
         setState((prev) => ({
@@ -61,14 +61,14 @@ export function useArticles(initialParams?: ArticleListParams): UseArticlesRetur
         }));
       }
     },
-    [params]
+    []
   );
 
   const setPage = useCallback(
     (page: number) => {
-      fetchArticles({ ...params, page });
+      fetchArticles({ ...paramsRef.current, page });
     },
-    [fetchArticles, params]
+    [fetchArticles]
   );
 
   useEffect(() => {
