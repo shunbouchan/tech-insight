@@ -1,4 +1,5 @@
 import math
+from typing import Literal
 
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -21,7 +22,7 @@ class ArticleService:
         category: str | None = None,
         author: str | None = None,
         keyword: str | None = None,
-        sort_order: str = "desc",
+        sort_order: Literal["asc", "desc"] = "desc",
     ) -> tuple[list[ArticleSummary], int]:
         """Get paginated list of articles."""
         # Build query
