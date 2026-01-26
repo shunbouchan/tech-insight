@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback, ReactNode } from 'react';
+import { useState, useRef, useEffect, useCallback, ReactNode, PointerEvent } from 'react';
 import { cn } from '@/lib/utils';
 
 interface PopoverProps {
@@ -40,12 +40,14 @@ export function Popover({ trigger, children, className }: PopoverProps) {
     };
   }, []);
 
-  const handleMouseEnter = useCallback(() => {
+  const handlePointerEnter = useCallback((e: PointerEvent) => {
+    if (e.pointerType === 'touch') return;
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     setIsOpen(true);
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
+  const handlePointerLeave = useCallback((e: PointerEvent) => {
+    if (e.pointerType === 'touch') return;
     hoverTimeoutRef.current = setTimeout(() => setIsOpen(false), 150);
   }, []);
 
@@ -57,8 +59,8 @@ export function Popover({ trigger, children, className }: PopoverProps) {
     <div
       ref={containerRef}
       className="relative inline-flex"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
     >
       <div onClick={handleClick} className="cursor-pointer">
         {trigger}
