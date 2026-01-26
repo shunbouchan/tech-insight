@@ -1,11 +1,13 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { SearchMode, SEARCH_MODE_PLACEHOLDERS } from '@/lib/constants';
 
 interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  searchMode?: SearchMode;
   isLoading?: boolean;
   className?: string;
 }
@@ -13,10 +15,13 @@ interface SearchBarProps {
 export function SearchBar({
   value,
   onChange,
-  placeholder = '自然言語で記事を検索...',
+  placeholder,
+  searchMode,
   isLoading = false,
   className,
 }: SearchBarProps) {
+  const resolvedPlaceholder =
+    placeholder ?? (searchMode ? SEARCH_MODE_PLACEHOLDERS[searchMode] : '自然言語で記事を検索...');
   return (
     <div className={cn('relative', className)}>
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -61,7 +66,7 @@ export function SearchBar({
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         className={cn(
           'block w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4',
           'text-gray-900 placeholder-gray-400',
