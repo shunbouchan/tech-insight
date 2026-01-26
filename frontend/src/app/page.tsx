@@ -8,7 +8,6 @@ import { useSearch } from '@/hooks/useSearch';
 import { useKeywordSearch } from '@/hooks/useKeywordSearch';
 import { SearchBar } from '@/components/search/SearchBar';
 import { SearchModeToggle } from '@/components/search/SearchModeToggle';
-import { SearchHelpPanel } from '@/components/search/SearchHelpPanel';
 import { SearchEmptyState } from '@/components/search/SearchEmptyState';
 import { CategoryFilter } from '@/components/search/CategoryFilter';
 import { ArticleList } from '@/components/articles/ArticleList';
@@ -132,7 +131,6 @@ export default function Home() {
               isLoading={isLoading && isSearchActive}
             />
             <CategoryFilter value={category} onChange={handleCategoryChange} />
-            <SearchHelpPanel />
           </div>
         </section>
 
