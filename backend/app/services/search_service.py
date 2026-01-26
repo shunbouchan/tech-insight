@@ -43,10 +43,12 @@ def _extract_snippet(content: str, query: str) -> str | None:
     # Sort by score desc, then by position asc (prefer earlier sentences)
     scored.sort(key=lambda x: (-x[0], x[1]))
 
-    # Take the top 1-2 sentences within length limit
+    # Take the top 1-2 sentences, then restore original document order
+    selected = sorted(scored[:2], key=lambda x: x[1])
+
     parts: list[str] = []
     total_len = 0
-    for _, _, sentence in scored[:2]:
+    for _, _, sentence in selected:
         if total_len + len(sentence) > SNIPPET_MAX_LENGTH:
             break
         parts.append(sentence)
