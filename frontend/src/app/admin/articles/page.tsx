@@ -21,30 +21,34 @@ export default function AdminArticlesPage() {
   const [category, setCategory] = useState<Category | ''>('');
   const debouncedKeyword = useDebounce(keyword, SEARCH_DEBOUNCE_MS);
 
-  const { articles, pagination, isLoading, error, fetchArticles } = useArticles();
+  const { articles, pagination, isLoading, error, fetchArticles } = useArticles({
+    skipInitialFetch: true,
+  });
 
   const [deleteTarget, setDeleteTarget] = useState<ArticleSummary | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  const currentFilters = {
+    keyword: debouncedKeyword || undefined,
+    category: category || undefined,
+  };
+
   useEffect(() => {
-    fetchArticles({
-      keyword: debouncedKeyword || undefined,
-      category: category || undefined,
-    });
+    fetchArticles(currentFilters);
   }, [debouncedKeyword, category, fetchArticles]);
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
 
     setIsDeleting(true);
+    setDeleteError(null);
     try {
       await api.articles.delete(deleteTarget.id);
       setDeleteTarget(null);
       fetchArticles({
         page: pagination?.page || 1,
-        keyword: debouncedKeyword || undefined,
-        category: category || undefined,
+        ...currentFilters,
       });
     } catch (err) {
       setDeleteError(err instanceof Error ? err.message : 'Failed to delete article');
@@ -193,8 +197,7 @@ export default function AdminArticlesPage() {
               onPageChange={(page) =>
                 fetchArticles({
                   page,
-                  keyword: debouncedKeyword || undefined,
-                  category: category || undefined,
+                  ...currentFilters,
                 })
               }
             />

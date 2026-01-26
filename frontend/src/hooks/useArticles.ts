@@ -18,7 +18,13 @@ interface UseArticlesReturn extends UseArticlesState {
   setPage: (page: number) => void;
 }
 
-export function useArticles(initialParams?: ArticleListParams): UseArticlesReturn {
+interface UseArticlesOptions {
+  initialParams?: ArticleListParams;
+  skipInitialFetch?: boolean;
+}
+
+export function useArticles(options?: UseArticlesOptions): UseArticlesReturn {
+  const { initialParams, skipInitialFetch = false } = options || {};
   const [state, setState] = useState<UseArticlesState>({
     articles: [],
     pagination: null,
@@ -72,7 +78,9 @@ export function useArticles(initialParams?: ArticleListParams): UseArticlesRetur
   );
 
   useEffect(() => {
-    fetchArticles();
+    if (!skipInitialFetch) {
+      fetchArticles();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
