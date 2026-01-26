@@ -72,7 +72,8 @@ class SearchService:
         query_embedding = embedding_service.encode(query)
         embedding_str = "[" + ",".join(str(x) for x in query_embedding) + "]"
 
-        pattern = f"%{query}%"
+        escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        pattern = f"%{escaped}%"
 
         sql = f"""
             SELECT
