@@ -150,6 +150,7 @@ export default function Home() {
           <ArticleList
             articles={displayArticles}
             isLoading={isLoading}
+            query={isSearchActive ? activeQuery : undefined}
             onArticleClick={handleArticleClick}
             emptyMessage={
               isSearchActive

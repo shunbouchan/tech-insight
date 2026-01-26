@@ -7,6 +7,7 @@ import { ArticleListSkeleton } from '@/components/ui/Skeleton';
 interface ArticleListProps {
   articles: (ArticleSummary | SearchResult)[];
   isLoading?: boolean;
+  query?: string;
   onArticleClick?: (id: number) => void;
   emptyMessage?: string;
 }
@@ -14,6 +15,7 @@ interface ArticleListProps {
 export function ArticleList({
   articles,
   isLoading = false,
+  query,
   onArticleClick,
   emptyMessage = '記事が見つかりませんでした',
 }: ArticleListProps) {
@@ -48,6 +50,7 @@ export function ArticleList({
         <ArticleCard
           key={article.id}
           article={article}
+          query={query}
           onClick={() => onArticleClick?.(article.id)}
         />
       ))}
