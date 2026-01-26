@@ -27,7 +27,7 @@ services:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       POSTGRES_DB: ${POSTGRES_DB:-techinsight}
-      CORS_ORIGINS: http://localhost:3001
+      CORS_ORIGINS: http://localhost:3000
       PYTHONUNBUFFERED: 1
     ports:
       - "8000:8000"
@@ -57,9 +57,9 @@ services:
       dockerfile: Dockerfile
     container_name: techinsight-frontend
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
     ports:
-      - "3001:3000"
+      - "3000:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
