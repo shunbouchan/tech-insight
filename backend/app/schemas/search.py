@@ -17,6 +17,7 @@ class SearchResult(BaseModel):
     category: CategoryEnum
     published_at: datetime
     similarity: float
+    highlight: str | None = None
 
 
 class SearchResponse(BaseModel):
