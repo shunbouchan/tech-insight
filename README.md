@@ -151,6 +151,7 @@ docker compose down -v
 | PATCH | `/api/v1/articles/{id}` | 記事更新 |
 | DELETE | `/api/v1/articles/{id}` | 記事削除 |
 | GET | `/api/v1/search?q=...` | セマンティック検索 |
+| GET | `/api/v1/search/hybrid?q=...` | ハイブリッド検索 |
 
 ### 使用例
 
@@ -203,7 +204,11 @@ tech-insight/
 └── docs/                   # ドキュメント
     ├── api.md              # API設計書
     ├── db.md               # DB設計書
-    └── implementation-plan.md
+    ├── ARCHITECTURE.md     # アーキテクチャ設計書
+    ├── CONTRIBUTING.md     # コントリビューションガイド
+    ├── implementation-plan.md
+    ├── implementation-insights.md
+    └── search-improvement-plan.md
 ```
 
 ## ドキュメント
