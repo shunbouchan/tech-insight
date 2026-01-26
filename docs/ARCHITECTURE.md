@@ -23,8 +23,9 @@ TechInsightは3層構成のWebアプリケーションです。pgvectorによる
 
 ### 検索方式
 
-- **キーワード検索**: SQL LIKE による部分一致検索
+- **キーワード検索**: SQL ILIKE による部分一致検索
 - **セマンティック検索**: テキストを384次元ベクトルに変換し、コサイン類似度で検索
+- **ハイブリッド検索**: キーワードで候補を絞り込み、ベクトル類似度で再ランキング
 
 ---
 
@@ -120,8 +121,9 @@ tech-insight/
 │   │   │   └── health.py      #   ヘルスチェック
 │   │   ├── services/          # ビジネスロジック層
 │   │   │   ├── article_service.py    # 記事CRUD ロジック
-│   │   │   ├── search_service.py     # 検索ロジック
-│   │   │   └── embedding_service.py  # 埋め込み生成
+│   │   │   ├── search_service.py     # 検索ロジック（セマンティック＋ハイブリッド）
+│   │   │   ├── embedding_service.py  # 埋め込み生成
+│   │   │   └── text_utils.py         # テキストユーティリティ（excerpt、スニペット抽出）
 │   │   ├── models/            # SQLAlchemy モデル
 │   │   ├── schemas/           # Pydantic スキーマ
 │   │   └── db/                # DB接続設定

@@ -21,6 +21,7 @@
 | PATCH | `/articles/{id}` | 記事更新（部分更新） |
 | DELETE | `/articles/{id}` | 記事削除 |
 | GET | `/search` | セマンティック検索 |
+| GET | `/search/hybrid` | ハイブリッド検索（キーワード＋ベクトル再ランキング） |
 
 ---
 
@@ -93,6 +94,7 @@
 | category | string | No | - | AI/ML, Backend, Frontend, DevOps | カテゴリでフィルタ |
 | author | string | No | - | - | 著者でフィルタ |
 | keyword | string | No | - | - | キーワード検索（title/contentをILIKE検索） |
+| sort_order | string | No | desc | asc, desc | 公開日のソート順 |
 
 > **キーワード検索 vs セマンティック検索**:
 > - `keyword`: 文字列の部分一致（ILIKE検索、大文字小文字を無視）。特定ワードの検索に適する
@@ -102,6 +104,7 @@
 ```
 GET /articles?page=1&page_size=10&category=AI/ML
 GET /articles?keyword=OpenAI&page_size=20
+GET /articles?sort_order=asc&page_size=10
 ```
 
 **レスポンス** (200 OK):
@@ -116,7 +119,8 @@ GET /articles?keyword=OpenAI&page_size=20
       "category": "AI/ML",
       "published_at": "2024-01-22T05:00:00Z",
       "created_at": "2025-01-22T00:00:00Z",
-      "updated_at": "2025-01-22T00:00:00Z"
+      "updated_at": "2025-01-22T00:00:00Z",
+      "highlight": null
     }
   ],
   "total": 255,
@@ -273,8 +277,6 @@ GET /articles?keyword=OpenAI&page_size=20
 
 自然言語クエリに基づいてセマンティック検索を実行。
 
-> **将来拡張**: 現状はGETで提供。検索条件の拡張・ログ保存・長文クエリ対応のため、将来的に `POST /search` も検討。
-
 **クエリパラメータ**:
 
 | パラメータ | 型 | 必須 | デフォルト | 範囲 | 説明 |
@@ -300,7 +302,8 @@ GET /search?q=machine%20learning%20optimization&category=AI/ML&top_k=10
       "author": "Tanaka",
       "category": "AI/ML",
       "published_at": "2024-01-22T05:00:00Z",
-      "similarity": 0.8542
+      "similarity": 0.8542,
+      "highlight": "In this article, we will focus on fine-tuning OpenAI API..."
     },
     {
       "id": 87,
@@ -309,7 +312,8 @@ GET /search?q=machine%20learning%20optimization&category=AI/ML&top_k=10
       "author": "Sato",
       "category": "AI/ML",
       "published_at": "2024-03-15T10:00:00Z",
-      "similarity": 0.7891
+      "similarity": 0.7891,
+      "highlight": "In this article, we will focus on optimizing LLM..."
     }
   ],
   "total": 2
@@ -321,6 +325,29 @@ GET /search?q=machine%20learning%20optimization&category=AI/ML&top_k=10
 - コサイン類似度（`1 - cosine_distance`）を使用
 - 高いほど検索クエリとの意味的類似度が高い
 - 閾値 0.3 未満の結果は除外される
+
+---
+
+## 8. ハイブリッド検索
+
+### GET /search/hybrid
+
+キーワードフィルタリングとベクトル再ランキングを組み合わせたハイブリッド検索。キーワードで候補を絞り込んだ後、ベクトル類似度で再ランキングする。
+
+**クエリパラメータ**:
+
+| パラメータ | 型 | 必須 | デフォルト | 範囲 | 説明 |
+|------------|-----|------|------------|------|------|
+| q | string | Yes | - | 1文字以上 | 検索クエリ |
+| category | string | No | - | AI/ML, Backend, Frontend, DevOps | カテゴリでフィルタ |
+| top_k | integer | No | 20 | 1-100 | 返却する最大件数 |
+
+**リクエスト例**:
+```
+GET /search/hybrid?q=Docker%20deployment&top_k=10
+```
+
+**レスポンス**: セマンティック検索と同一形式（`SearchResponse`）
 
 ---
 
@@ -353,6 +380,7 @@ interface ArticleSummary {
   published_at: string;  // ISO 8601
   created_at: string;    // ISO 8601
   updated_at: string;    // ISO 8601
+  highlight?: string;    // キーワード検索時のスニペット（クエリ関連文を抽出）
 }
 ```
 
@@ -379,6 +407,7 @@ interface SearchResult {
   category: 'AI/ML' | 'Backend' | 'Frontend' | 'DevOps';
   published_at: string;
   similarity: number;    // 0.0 - 1.0 (cosine similarity)
+  highlight?: string;    // クエリ関連文のスニペット
 }
 ```
 

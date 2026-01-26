@@ -93,12 +93,13 @@ type SearchMode = 'keyword' | 'semantic';
 - 検索のコツ（モード別）
 - 「別のモードで試す」ボタン
 
-### 3.2 SearchHelpPanel コンポーネント
+### 3.2 検索モード使い分けヘルプ
 
-**ファイル**: `frontend/src/components/search/SearchHelpPanel.tsx`
+**実装済み**: `SearchModeToggle` 内のポップオーバーとして統合
 
-- 検索機能の使い分け説明パネル（折りたたみ式）
-- キーワード vs セマンティックの違いを解説
+- 検索モードトグル横の `?` アイコン＋「検索モードの使い分け」をホバー/クリックで表示
+- 汎用 `Popover` コンポーネント（`frontend/src/components/ui/Popover.tsx`）を使用
+- ~~`SearchHelpPanel.tsx`~~（廃止 → ポップオーバーに移行済み）
 
 ---
 
@@ -155,7 +156,7 @@ EMBEDDING_PROVIDER=local  # local (default) | openai
 | `frontend/src/components/search/SearchModeToggle.tsx` | 検索モード切替UI |
 | `frontend/src/components/search/HighlightedText.tsx` | ハイライト表示 |
 | `frontend/src/components/search/SearchEmptyState.tsx` | 0件時UI |
-| `frontend/src/components/search/SearchHelpPanel.tsx` | 検索ヘルプ |
+| `frontend/src/components/ui/Popover.tsx` | 汎用ポップオーバー（検索ヘルプ等） |
 | `frontend/src/hooks/useKeywordSearch.ts` | キーワード検索フック |
 
 ### 変更

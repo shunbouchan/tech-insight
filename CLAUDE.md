@@ -6,7 +6,7 @@
 
 TechInsightは、技術記事のためのAI搭載ナレッジベースです。ベクトル埋め込みを使用したCRUD操作とセマンティック検索を提供します。バックエンドにFastAPI（Python）、フロントエンドにNext.js 14、ベクトル類似検索にPostgreSQL + pgvectorを使用しています。
 
-**現在のステータス**: ドキュメント・設計完了済み。実装は`docs/`の仕様書に従って進めます。
+**現在のステータス**: 実装完了済み。セマンティック検索、キーワード検索、ハイブリッド検索、管理画面CRUD、検索UX改善（スニペット抽出・ハイライト表示）が稼働中。
 
 ## 開発コマンド
 
@@ -62,7 +62,7 @@ pgvector HNSWインデックス → コサイン類似度検索
 類似度スコア付きJSONレスポンス
 ```
 
-### 主要ディレクトリ（計画構造）
+### 主要ディレクトリ
 - `backend/app/api/v1/` - APIエンドポイント（articles, search, health）
 - `backend/app/services/` - ビジネスロジック（embedding_service.pyが重要）
 - `backend/app/models/` - SQLAlchemyモデル
@@ -92,12 +92,13 @@ pgvector HNSWインデックス → コサイン類似度検索
 ## API設計
 
 `/api/v1`でのRESTful API:
-- `GET /articles` - 一覧取得（excerpt返却、keyword/category/authorでフィルタ可能）
+- `GET /articles` - 一覧取得（excerpt返却、keyword/category/author/sort_orderでフィルタ・ソート可能）
 - `GET /articles/{id}` - 詳細取得（content全文）
 - `POST /articles` - 作成（埋め込み自動生成）
 - `PATCH /articles/{id}` - 部分更新（必要に応じて埋め込み再生成）
 - `DELETE /articles/{id}` - 削除
 - `GET /search?q=...` - セマンティック検索
+- `GET /search/hybrid?q=...` - ハイブリッド検索（キーワード＋ベクトル再ランキング）
 
 詳細な仕様とサンプルは`docs/api.md`を参照。
 
