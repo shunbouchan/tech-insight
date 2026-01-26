@@ -60,6 +60,61 @@ def _extract_snippet(content: str, query: str) -> str | None:
 class SearchService:
     """Service for semantic search operations."""
 
+    async def hybrid_search(
+        self,
+        session: AsyncSession,
+        query: str,
+        *,
+        category: str | None = None,
+        top_k: int = 20,
+    ) -> list[SearchResult]:
+        """Perform hybrid search: keyword filtering + vector re-ranking."""
+        query_embedding = embedding_service.encode(query)
+        embedding_str = "[" + ",".join(str(x) for x in query_embedding) + "]"
+
+        pattern = f"%{query}%"
+
+        sql = f"""
+            SELECT
+                id, title, content, author, category, published_at,
+                1 - (embedding <=> '{embedding_str}'::vector) as similarity
+            FROM articles
+            WHERE embedding IS NOT NULL
+              AND (title ILIKE :pattern OR content ILIKE :pattern)
+        """
+
+        if category:
+            sql += " AND category = :category"
+
+        sql += f"""
+            ORDER BY embedding <=> '{embedding_str}'::vector
+            LIMIT :top_k
+        """
+
+        params: dict = {
+            "pattern": pattern,
+            "top_k": top_k,
+        }
+        if category:
+            params["category"] = category
+
+        result = await session.execute(text(sql), params)
+        rows = result.fetchall()
+
+        return [
+            SearchResult(
+                id=row.id,
+                title=row.title,
+                excerpt=create_excerpt(row.content),
+                author=row.author,
+                category=row.category,
+                published_at=row.published_at,
+                similarity=round(row.similarity, 4),
+                highlight=_extract_snippet(row.content, query),
+            )
+            for row in rows
+        ]
+
     async def search(
         self,
         session: AsyncSession,
