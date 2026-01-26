@@ -101,6 +101,14 @@ pgvector HNSWインデックス → コサイン類似度検索
 
 詳細な仕様とサンプルは`docs/api.md`を参照。
 
+## 開発ルール
+
+- Issue・PRは `.github/` 配下のテンプレートに沿って作成すること
+  - Issue作成時: `.github/ISSUE_TEMPLATE/` のテンプレート形式に従う
+  - PR作成時: `.github/pull_request_template.md` の形式に従う
+- ブランチ名・コミットメッセージの規約は `docs/CONTRIBUTING.md` を参照
+- アーキテクチャ・設計判断は `docs/ARCHITECTURE.md` を参照
+
 ## 実装リファレンス
 
 5フェーズの詳細な実装計画は`docs/implementation-plan.md`を参照。計画されたディレクトリ構造に正確に従ってください。
