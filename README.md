@@ -27,6 +27,7 @@ AI搭載型ナレッジベース「TechInsight」
 
 - Docker Desktop（Docker Compose v2含む）
 - Git
+- **外部APIキーは不要** — 埋め込みモデルはローカル実行のため、OpenAI等のAPIキーなしで利用可能
 
 ### セットアップ
 
@@ -115,6 +116,17 @@ docker compose down
 # ボリューム含めて完全削除（DBデータもリセット）
 docker compose down -v
 ```
+
+## 埋め込みプロバイダ設定
+
+環境変数 `EMBEDDING_PROVIDER` で埋め込み生成の方式を切り替えられます（デフォルト: `local`）。
+
+| 値 | 説明 | APIキー |
+|----|------|---------|
+| `local`（デフォルト） | sentence-transformers/all-MiniLM-L6-v2 をローカル実行 | 不要 |
+| `openai`（将来対応予定） | OpenAI Embeddings API を使用 | `OPENAI_API_KEY` が必要 |
+
+設定なし、または `EMBEDDING_PROVIDER=local` でそのまま利用できます。
 
 ## 開発ルール
 
