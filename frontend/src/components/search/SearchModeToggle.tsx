@@ -42,7 +42,7 @@ export function SearchModeToggle({ value, onChange, className }: SearchModeToggl
             <span>検索モードの使い分け</span>
           </span>
         }
-        className="w-[28rem] max-w-[calc(100vw-2rem)]"
+        className="w-[32rem] max-w-[calc(100vw-2rem)]"
       >
         <div className="grid gap-4 md:grid-cols-2">
           <div>
