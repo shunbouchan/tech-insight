@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { Article, ArticleCreateInput } from '@/types/article';
@@ -9,18 +9,17 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
 
 interface EditArticlePageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 export default function EditArticlePage({ params }: EditArticlePageProps) {
-  const resolvedParams = use(params);
   const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const articleId = parseInt(resolvedParams.id, 10);
+  const articleId = parseInt(params.id, 10);
 
   useEffect(() => {
     const fetchArticle = async () => {

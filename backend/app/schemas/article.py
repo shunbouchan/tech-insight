@@ -58,3 +58,4 @@ class ArticleSummary(BaseModel):
     published_at: datetime
     created_at: datetime
     updated_at: datetime
+    highlight: str | None = None

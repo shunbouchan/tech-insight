@@ -69,6 +69,7 @@ class ArticleService:
                 published_at=article.published_at,
                 created_at=article.created_at,
                 updated_at=article.updated_at,
+                highlight=self._extract_highlight(article.content, keyword),
             )
             for article in articles
         ]
@@ -129,6 +130,15 @@ class ArticleService:
         """Delete an article."""
         await session.delete(article)
         await session.commit()
+
+    @staticmethod
+    def _extract_highlight(content: str, keyword: str | None) -> str | None:
+        """Extract highlight snippet for keyword search."""
+        if not keyword:
+            return None
+        from app.services.search_service import _extract_snippet
+
+        return _extract_snippet(content, keyword)
 
     def calculate_total_pages(self, total: int, page_size: int) -> int:
         """Calculate total number of pages."""
