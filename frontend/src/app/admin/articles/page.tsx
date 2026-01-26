@@ -1,71 +1,63 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
-import { ArticleSummary } from '@/types/article';
-import { ArticleListResponse } from '@/types/api';
+import { ArticleSummary, Category } from '@/types/article';
 import { formatDate } from '@/lib/utils';
+import { SEARCH_DEBOUNCE_MS } from '@/lib/constants';
+import { useArticles } from '@/hooks/useArticles';
+import { useDebounce } from '@/hooks/useDebounce';
+import { SearchBar } from '@/components/search/SearchBar';
+import { CategoryFilter } from '@/components/search/CategoryFilter';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
 import { Pagination } from '@/components/ui/Pagination';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
 
 export default function AdminArticlesPage() {
-  const [articles, setArticles] = useState<ArticleSummary[]>([]);
-  const [pagination, setPagination] = useState<{
-    total: number;
-    page: number;
-    total_pages: number;
-  } | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [keyword, setKeyword] = useState('');
+  const [category, setCategory] = useState<Category | ''>('');
+  const debouncedKeyword = useDebounce(keyword, SEARCH_DEBOUNCE_MS);
+
+  const { articles, pagination, isLoading, error, fetchArticles } = useArticles({
+    skipInitialFetch: true,
+  });
+
   const [deleteTarget, setDeleteTarget] = useState<ArticleSummary | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  const fetchArticles = useCallback(async (page = 1) => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response: ArticleListResponse = await api.articles.list({
-        page,
-        page_size: DEFAULT_PAGE_SIZE,
-      });
-
-      setArticles(response.items);
-      setPagination({
-        total: response.total,
-        page: response.page,
-        total_pages: response.total_pages,
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch articles');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const currentFilters = {
+    keyword: debouncedKeyword || undefined,
+    category: category || undefined,
+  };
 
   useEffect(() => {
-    fetchArticles();
-  }, [fetchArticles]);
+    fetchArticles(currentFilters);
+  }, [debouncedKeyword, category, fetchArticles]);
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
 
     setIsDeleting(true);
+    setDeleteError(null);
     try {
       await api.articles.delete(deleteTarget.id);
       setDeleteTarget(null);
-      fetchArticles(pagination?.page || 1);
+      fetchArticles({
+        page: pagination?.page || 1,
+        ...currentFilters,
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete article');
+      setDeleteError(err instanceof Error ? err.message : 'Failed to delete article');
     } finally {
       setIsDeleting(false);
     }
   };
+
+  const hasFilter = !!debouncedKeyword || !!category;
 
   return (
     <div className="min-h-full bg-gray-50 py-8">
@@ -74,7 +66,11 @@ export default function AdminArticlesPage() {
           <div>
             <h1 className="mb-2 text-3xl font-bold text-gray-900">記事管理</h1>
             <p className="text-gray-600">
-              {pagination ? `${pagination.total} 件の記事` : '読み込み中...'}
+              {pagination
+                ? hasFilter
+                  ? `${pagination.total} 件の検索結果`
+                  : `${pagination.total} 件の記事`
+                : '読み込み中...'}
             </p>
           </div>
           <Link href="/admin/articles/new">
@@ -92,9 +88,19 @@ export default function AdminArticlesPage() {
           </Link>
         </div>
 
-        {error && (
+        <div className="mb-6 space-y-4">
+          <SearchBar
+            value={keyword}
+            onChange={setKeyword}
+            placeholder="キーワードで記事を検索..."
+            isLoading={isLoading && !!debouncedKeyword}
+          />
+          <CategoryFilter value={category} onChange={setCategory} />
+        </div>
+
+        {(error || deleteError) && (
           <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
-            <p className="text-red-600">{error}</p>
+            <p className="text-red-600">{error || deleteError}</p>
           </div>
         )}
 
@@ -146,7 +152,7 @@ export default function AdminArticlesPage() {
               ) : articles.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
-                    記事がありません
+                    {hasFilter ? '条件に一致する記事がありません' : '記事がありません'}
                   </td>
                 </tr>
               ) : (
@@ -188,7 +194,12 @@ export default function AdminArticlesPage() {
             <Pagination
               currentPage={pagination.page}
               totalPages={pagination.total_pages}
-              onPageChange={fetchArticles}
+              onPageChange={(page) =>
+                fetchArticles({
+                  page,
+                  ...currentFilters,
+                })
+              }
             />
           </div>
         )}

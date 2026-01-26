@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@/lib/api';
 import { ArticleSummary, Pagination } from '@/types/article';
 import { ArticleListParams } from '@/types/api';
@@ -18,18 +18,24 @@ interface UseArticlesReturn extends UseArticlesState {
   setPage: (page: number) => void;
 }
 
-export function useArticles(initialParams?: ArticleListParams): UseArticlesReturn {
+interface UseArticlesOptions {
+  initialParams?: ArticleListParams;
+  skipInitialFetch?: boolean;
+}
+
+export function useArticles(options?: UseArticlesOptions): UseArticlesReturn {
+  const { initialParams, skipInitialFetch = false } = options || {};
   const [state, setState] = useState<UseArticlesState>({
     articles: [],
     pagination: null,
     isLoading: false,
     error: null,
   });
-  const [params, setParams] = useState<ArticleListParams>(initialParams || {});
+  const paramsRef = useRef<ArticleListParams>(initialParams || {});
 
   const fetchArticles = useCallback(
     async (newParams?: ArticleListParams) => {
-      const queryParams = newParams !== undefined ? newParams : params;
+      const queryParams = newParams !== undefined ? newParams : paramsRef.current;
       setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
       try {
@@ -51,7 +57,7 @@ export function useArticles(initialParams?: ArticleListParams): UseArticlesRetur
         });
 
         if (newParams !== undefined) {
-          setParams(newParams);
+          paramsRef.current = newParams;
         }
       } catch (err) {
         setState((prev) => ({
@@ -61,18 +67,20 @@ export function useArticles(initialParams?: ArticleListParams): UseArticlesRetur
         }));
       }
     },
-    [params]
+    []
   );
 
   const setPage = useCallback(
     (page: number) => {
-      fetchArticles({ ...params, page });
+      fetchArticles({ ...paramsRef.current, page });
     },
-    [fetchArticles, params]
+    [fetchArticles]
   );
 
   useEffect(() => {
-    fetchArticles();
+    if (!skipInitialFetch) {
+      fetchArticles();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
