@@ -119,12 +119,9 @@ docker compose down -v
 
 ## 埋め込みプロバイダ設定
 
-環境変数 `EMBEDDING_PROVIDER` で埋め込み生成の方式を切り替えられます（デフォルト: `local`）。
+環境変数 `EMBEDDING_PROVIDER` で埋め込み生成の方式を設定できます（デフォルト: `local`）。
 
-| 値 | 説明 | APIキー |
-|----|------|---------|
-| `local`（デフォルト） | sentence-transformers/all-MiniLM-L6-v2 をローカル実行 | 不要 |
-| `openai`（将来対応予定） | OpenAI Embeddings API を使用 | `OPENAI_API_KEY` が必要 |
+現在は `local`（sentence-transformers/all-MiniLM-L6-v2 をローカル実行）のみサポートしています。外部APIキーは不要です。
 
 設定なし、または `EMBEDDING_PROVIDER=local` でそのまま利用できます。
 
