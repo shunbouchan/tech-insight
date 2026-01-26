@@ -30,6 +30,7 @@ export interface SearchResult {
   category: Category;
   published_at: string;
   similarity: number;
+  highlight?: string;
 }
 
 export interface ArticleCreateInput {

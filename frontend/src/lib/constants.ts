@@ -13,3 +13,22 @@ export const CATEGORY_COLORS: Record<Category, string> = {
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const SEARCH_DEBOUNCE_MS = 300;
+
+export type SearchMode = 'keyword' | 'semantic';
+
+export const SEARCH_MODES: SearchMode[] = ['keyword', 'semantic'];
+
+export const SEARCH_MODE_LABELS: Record<SearchMode, string> = {
+  keyword: 'キーワード検索',
+  semantic: 'セマンティック検索',
+};
+
+export const SEARCH_MODE_TOOLTIPS: Record<SearchMode, string> = {
+  keyword: 'タイトル・本文のキーワードで検索',
+  semantic: 'AI埋め込みによる意味的な類似検索',
+};
+
+export const SEARCH_MODE_PLACEHOLDERS: Record<SearchMode, string> = {
+  keyword: 'キーワードで記事を検索...',
+  semantic: '自然言語で記事を検索...',
+};
