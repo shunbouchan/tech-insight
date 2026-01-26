@@ -1,3 +1,5 @@
+from typing import Literal
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,6 +24,7 @@ async def get_articles(
     category: CategoryEnum | None = Query(None, description="Filter by category"),
     author: str | None = Query(None, description="Filter by author"),
     keyword: str | None = Query(None, description="Search keyword (ILIKE)"),
+    sort_order: Literal["asc", "desc"] = Query("desc", description="Sort order for published_at"),
     db: AsyncSession = Depends(get_db),
 ) -> PaginatedResponse[ArticleSummary]:
     """Get paginated list of articles."""
@@ -32,6 +35,7 @@ async def get_articles(
         category=category.value if category else None,
         author=author,
         keyword=keyword,
+        sort_order=sort_order,
     )
 
     return PaginatedResponse(

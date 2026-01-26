@@ -17,6 +17,7 @@ export interface ArticleListParams {
   category?: string;
   author?: string;
   keyword?: string;
+  sort_order?: string;
 }
 
 export interface SearchParams {
