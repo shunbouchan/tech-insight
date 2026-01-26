@@ -19,7 +19,7 @@ function isSearchResult(article: ArticleSummary | SearchResult): article is Sear
 export function ArticleCard({ article, query = '', onClick }: ArticleCardProps) {
   const searchResult = isSearchResult(article) ? article : null;
   const similarity = searchResult?.similarity ?? null;
-  const highlight = searchResult?.highlight ?? null;
+  const highlight = article.highlight ?? null;
 
   return (
     <Card hover onClick={onClick} className="flex h-full flex-col">

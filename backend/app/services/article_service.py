@@ -6,15 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.article import Article
 from app.schemas.article import ArticleCreate, ArticleSummary, ArticleUpdate
 from app.services.embedding_service import embedding_service
-
-EXCERPT_LENGTH = 200
-
-
-def create_excerpt(content: str) -> str:
-    """Create excerpt from content (first 200 chars)."""
-    if len(content) <= EXCERPT_LENGTH:
-        return content
-    return content[:EXCERPT_LENGTH] + "..."
+from app.services.text_utils import create_excerpt, extract_snippet
 
 
 class ArticleService:
@@ -69,6 +61,7 @@ class ArticleService:
                 published_at=article.published_at,
                 created_at=article.created_at,
                 updated_at=article.updated_at,
+                highlight=extract_snippet(article.content, keyword) if keyword else None,
             )
             for article in articles
         ]
