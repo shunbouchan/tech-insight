@@ -8,6 +8,8 @@ import { useSearch } from '@/hooks/useSearch';
 import { useKeywordSearch } from '@/hooks/useKeywordSearch';
 import { SearchBar } from '@/components/search/SearchBar';
 import { SearchModeToggle } from '@/components/search/SearchModeToggle';
+import { SearchHelpPanel } from '@/components/search/SearchHelpPanel';
+import { SearchEmptyState } from '@/components/search/SearchEmptyState';
 import { CategoryFilter } from '@/components/search/CategoryFilter';
 import { ArticleList } from '@/components/articles/ArticleList';
 import { ArticleModal } from '@/components/articles/ArticleModal';
@@ -103,6 +105,11 @@ export default function Home() {
     setSelectedArticleId(null);
   }, []);
 
+  const handleSwitchMode = useCallback(() => {
+    const newMode: SearchMode = searchMode === 'semantic' ? 'keyword' : 'semantic';
+    handleSearchModeChange(newMode);
+  }, [searchMode, handleSearchModeChange]);
+
   const resultCount = isSearchActive
     ? searchMode === 'semantic'
       ? semanticResults.length
@@ -125,6 +132,7 @@ export default function Home() {
               isLoading={isLoading && isSearchActive}
             />
             <CategoryFilter value={category} onChange={handleCategoryChange} />
+            <SearchHelpPanel />
           </div>
         </section>
 
@@ -147,17 +155,21 @@ export default function Home() {
             )}
           </div>
 
-          <ArticleList
-            articles={displayArticles}
-            isLoading={isLoading}
-            query={isSearchActive ? activeQuery : undefined}
-            onArticleClick={handleArticleClick}
-            emptyMessage={
-              isSearchActive
-                ? '検索クエリに一致する記事が見つかりませんでした'
-                : '記事が見つかりませんでした'
-            }
-          />
+          {isSearchActive && !isLoading && displayArticles.length === 0 ? (
+            <SearchEmptyState
+              query={activeQuery}
+              searchMode={searchMode}
+              onSwitchMode={handleSwitchMode}
+            />
+          ) : (
+            <ArticleList
+              articles={displayArticles}
+              isLoading={isLoading}
+              query={isSearchActive ? activeQuery : undefined}
+              onArticleClick={handleArticleClick}
+              emptyMessage="記事が見つかりませんでした"
+            />
+          )}
 
           {!isSearchActive && pagination && pagination.total_pages > 1 && (
             <div className="mt-8">
