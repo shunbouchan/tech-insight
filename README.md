@@ -116,6 +116,16 @@ docker compose down
 docker compose down -v
 ```
 
+## 開発ルール
+
+チーム開発における基本ルールです。詳細は [コントリビューションガイド](docs/CONTRIBUTING.md) を参照してください。
+
+- **ブランチ**: `feature/`, `fix/`, `refactor/`, `docs/`, `chore/` プレフィックスを使用
+- **コミット**: [Conventional Commits](https://www.conventionalcommits.org/) に準拠（日本語）
+- **PR**: テンプレートに沿って記入、CIパス必須、500行以内を目安に
+- **コードスタイル**: バックエンドは Ruff、フロントエンドは ESLint + Prettier
+- **テスト**: PRマージ前に既存テストが全て通ることを確認
+
 ## API
 
 ### エンドポイント一覧
@@ -188,6 +198,8 @@ tech-insight/
 
 - [API設計書](docs/api.md) - APIエンドポイント詳細
 - [DB設計書](docs/db.md) - データベーススキーマ
+- [アーキテクチャ設計書](docs/ARCHITECTURE.md) - システム全体像と設計判断の記録
+- [コントリビューションガイド](docs/CONTRIBUTING.md) - 開発ルールと手順
 - [実装の説明・工夫点](docs/implementation-insights.md) - 設計判断と工夫点の解説
 
 ## ライセンス

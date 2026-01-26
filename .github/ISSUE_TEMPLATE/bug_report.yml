@@ -1,0 +1,77 @@
+name: バグ報告
+description: バグを報告する
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: バグの概要
+      description: バグの内容を簡潔に説明してください
+      placeholder: 例）セマンティック検索で日本語クエリを入力すると結果が0件になる
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現手順
+      description: バグを再現するための手順を記載してください
+      placeholder: |
+        1. '...' に移動する
+        2. '...' をクリックする
+        3. '...' を入力する
+        4. エラーが発生する
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待する動作
+      description: 本来どう動作すべきかを記載してください
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 実際の動作
+      description: 実際にどう動作したかを記載してください
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影響範囲
+      description: バグが発生している領域を選択してください
+      options:
+        - フロントエンド
+        - バックエンドAPI
+        - データベース
+        - セマンティック検索
+        - Docker・環境構築
+        - その他
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 環境情報
+      description: OS、ブラウザ、Dockerバージョン等
+      placeholder: |
+        - OS: macOS 15.x
+        - ブラウザ: Chrome 130
+        - Docker: 27.x
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: スクリーンショット・ログ
+      description: 関連するスクリーンショットやエラーログがあれば添付してください
+    validations:
+      required: false
