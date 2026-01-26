@@ -21,6 +21,7 @@ class ArticleService:
         category: str | None = None,
         author: str | None = None,
         keyword: str | None = None,
+        sort_order: str = "desc",
     ) -> tuple[list[ArticleSummary], int]:
         """Get paginated list of articles."""
         # Build query
@@ -43,7 +44,8 @@ class ArticleService:
         total = total_result.scalar() or 0
 
         # Apply pagination and ordering
-        query = query.order_by(Article.published_at.desc())
+        order = Article.published_at.desc() if sort_order == "desc" else Article.published_at.asc()
+        query = query.order_by(order)
         query = query.offset((page - 1) * page_size).limit(page_size)
 
         # Execute query
